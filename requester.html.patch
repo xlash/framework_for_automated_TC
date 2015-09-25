@@ -1,0 +1,12 @@
+//Modify requester.html
+
+<iframe id="tester_sandbox" seamless="seamless" src="tester_sandbox.html" sandbox="allow-scripts allow-popups"></iframe>
+
+
+//Then load new framework at the bottom
+<script type="text/javascript" src="GNM_custom.js"></script>
+<script type="text/javascript" src="GNM_framework.js"></script>
+
+
+</body>
+</html>
