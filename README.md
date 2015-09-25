@@ -46,3 +46,8 @@ Collection/
                sequence #1
                sequence #2
 ```
+
+
+Prerequesities :
+    Postman with license Jetpack addon
+    Tested with Postman 3.04 & 3.12 under Chrome  40.0.2214.115
