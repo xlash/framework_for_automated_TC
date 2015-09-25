@@ -1,0 +1,56 @@
+Requests::finishRequestRun() {
+		//
+		//INSERT AFTER :addResult(result);
+		//
+	        /*GuillaumeNM 20150915 Hack to perform tests combination*/
+	        var repeat=false;
+	        iteration_num=0;
+
+	        //Do not try to repeat sequences. Just new tests cases	    
+		    if (requests[currentRequestIndex].preRequestScript.indexOf("FRAMEWORK.test_init(")!=-1){
+	        	//Find previous test case
+				previousTCRequestID=-1
+		        for (k=currentRequestIndex-1;k>=0;k--)
+		        	{  	if(requests[k].preRequestScript.indexOf("FRAMEWORK.test_init(")!=-1) {previousTCRequestID=k;break;}		}
+	        	//Create new requests only on the first Test Case entry, not everytime
+		        if (currentRequestIndex==0 || previousTCRequestID==-1 || requests[currentRequestIndex].id!=requests[previousTCRequestID].id) {
+		        	//For each key in the environment current attributes. The goal is to determine if this TestCase needs to be repeated.
+					for (var key in pm.envManager.get("selectedEnv").attributes.values) {
+			            entry = pm.envManager.get("selectedEnv").attributes.values[key]
+			            if (entry.key=="REPEAT_TC" && entry.value=="true") { 
+			                repeat=true
+			            } else if (entry.key=="TOTAL_ITERATION_NUM"){iteration_num = parseInt(entry.value) }
+			        };
+			        if (repeat){
+			    		if (requests[currentRequestIndex].preRequestScript.indexOf("FRAMEWORK.test_init(")==-1){throw "You can only repeat a test case by repeating it's first sequence. (with test_init())"}
+			        	//Find how many sequences we need to copy over
+			        	num_of_sequences=1
+			        	for (k= currentRequestIndex+1; k < requests.length ; k++) {
+			        		//If we don't find a test_init() method in the next sequence, it's the same test case.
+	                        if (requests[k].preRequestScript.indexOf("FRAMEWORK.test_init(")==-1){
+	                        	num_of_sequences++;
+	                        	break;
+	                        }
+	                    }
+	                    //Includes currentRequestIndex + all sequences before a test_init()
+	                    requests_to_insert = requests.slice(currentRequestIndex,currentRequestIndex+num_of_sequences+1);
+	                    //requests_to_insert= [requests[currentRequestIndex]].concat(requests_to_insert)
+	                    requests_to_insert.reverse(); //To insert in correct order
+			        	//END Find sequences
+			        	//Loop through the  of repetitions
+			            for(repeat_TC_i=0;repeat_TC_i<iteration_num-1;repeat_TC_i++){
+			                console.log("Inserting iteration #" + repeat_TC_i + " of this testcase");
+			                //Re-insert the same test case right after this one!
+			                //Loop through all the tests cases to insert
+			                for (var seq in requests_to_insert){
+			                	console.log(".....Inserting sequence #" + seq + " of this testcase");
+			                	//Precede this tests with all new tests
+			                	requests.splice(currentRequestIndex,0,requests_to_insert[seq]);
+			                	requestCount+=1;
+			                }
+
+			            }
+			        }
+			    }
+			}
+	        //END GUILLAUMENM Repetitive Tests Cases
