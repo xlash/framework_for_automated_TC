@@ -1,0 +1,6 @@
+//Change the following section
+
+  "sandbox": {
+      "content_security_policy": "sandbox allow-scripts allow-popups allow-pointer-lock ; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://ssl.google-analytics.com/ga.js;",
+      "pages": [ "embedded_ga_host.html", "tester_sandbox.html", "snippet_sandbox.html" ]
+   },
