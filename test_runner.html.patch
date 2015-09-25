@@ -1,0 +1,9 @@
+//Load new framework at bottom of test_runner.html
+
+<script type="text/javascript" src="GNM_custom.js"></script>
+<script type="text/javascript" src="GNM_framework.js"></script>
+
+
+</script>
+</body>
+</html>
