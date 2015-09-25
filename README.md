@@ -11,6 +11,8 @@ You can now use a few methods to define sequence of tests cases, and to repeat t
 
 For example : 
 
+
+```javascript
 TC-1 
     Sequence-1 :
                        Pre-request script :
@@ -33,13 +35,14 @@ TC-1
                                   FRAMEWORK.sequence_end(tests);
                                   FRAMEWORK.test_exit();
 TC-2
-
+```
 
 
 
 ***Every tests cases should have it's subfolder in a collection, and every sequence is a test under that folder.
-
+```javascript
 Collection/
       TestCase-TC1/
                sequence #1
                sequence #2
+```
